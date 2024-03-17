@@ -1,18 +1,19 @@
-import { getPosts } from "@/lib/posts";
 import { Post } from "@prisma/client";
-import { main } from "@/create";
-import { newUserAction } from "@/lib/serveractions";
+import * as servactions from "@/lib/serveractions";
+import { useState } from "react";
 
-export default async function Home() {
-  const posts: Post[] = (await getPosts()) as Post[];
+import SearchPost from "./search";
 
-  main();
-
+export default function Home() {
   return (
     <main className="py-20">
-      <h1 className="text-3xl font-bold text-center">Server Action Test</h1>
+      <div>
+        <SearchPost />
+      </div>
+
+      {/* <h1 className="text-3xl font-bold text-center">Register</h1>
       <form
-        action={newUserAction}
+        action={servactions.newUserAction}
         className="flex flex-col gap-5 max-w-xl mx-auto p-5"
       >
         <input
@@ -21,7 +22,7 @@ export default async function Home() {
           className="border border-grey-300 p-2 rounded-md text-black"
         />
         <input
-          name="password"
+          name="unhashedpassword"
           placeholder="password"
           className="border border-grey-300 p-2 rounded-md text-black"
         />
@@ -33,18 +34,47 @@ export default async function Home() {
         <button type="submit">Submit</button>
       </form>
 
-      <h1 className="text-3xl font-bold text-center">Server Action Test</h1>
+      <h1 className="text-3xl font-bold text-center">New Post</h1>
+      <form
+        action={servactions.newPostAction}
+        className="flex flex-col gap-5 max-w-xl mx-auto p-5"
+      >
+        <input
+          name="title"
+          placeholder="title"
+          className="border border-grey-300 p-2 rounded-md text-black"
+        />
+        <input
+          name="content"
+          placeholder="content"
+          className="border border-grey-300 p-2 rounded-md text-black"
+        />
+        <button type="submit">Submit</button>
+      </form>
 
-      <h2 className="font-bold p-5">List of Posts</h2>
-
-      <div className="flex flex-wrap gap-5">
-        {posts.map((posts) => (
-          <div key={posts.id} className="border border-grey-300 p-5 rounded-md">
-            <h3>{posts.title}</h3>
-            <p>{posts.content}</p>
-          </div>
-        ))}
-      </div>
+      <h1 className="text-3xl font-bold text-center">New Profile</h1>
+      <form
+        action={servactions.newProfileAction}
+        className="flex flex-col gap-5 max-w-xl mx-auto p-5"
+      >
+        <input
+          name="bio"
+          placeholder="bio"
+          className="border border-grey-300 p-2 rounded-md text-black"
+        />
+        <input
+          name="grade_level"
+          placeholder="grade_level"
+          className="border border-grey-300 p-2 rounded-md text-black"
+        />
+        <input
+          name="school"
+          placeholder="school"
+          className="border border-grey-300 p-2 rounded-md text-black"
+        />
+        <button type="submit">Submit</button>
+      </form>
+      <h1 className="text-3xl font-bold text-center">Server Action Test</h1> */}
     </main>
   );
 }

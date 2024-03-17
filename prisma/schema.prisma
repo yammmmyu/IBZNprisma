@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -8,49 +9,51 @@ datasource db {
 }
 
 model Post {
-  id String @id @default(uuid())
-
-  title      String   @db.VarChar(255)
-  content    String?
-  author     User?    @relation(fields: [authorId], references: [id])
+  id         String     @id @default(uuid())
+  title      String     @db.VarChar(255)
+  content    String
+  author     User?      @relation(fields: [authorId], references: [id])
   authorId   String
-  createdAt  DateTime @default(now())
-  upadatedAt DateTime @updatedAt
+  createdAt  DateTime   @default(now())
+  upadatedAt DateTime   @updatedAt
+  category   Category[]
 }
 
 model Question {
-  id         String   @id @default(uuid())
+  id         String     @id @default(cuid())
   question   String
-  author     User     @relation(fields: [authorId], references: [id])
+  author     User       @relation(fields: [authorId], references: [id])
   authorId   String
-  createdAt  DateTime @default(now())
-  upadatedAt DateTime @updatedAt
+  createdAt  DateTime   @default(now())
+  upadatedAt DateTime   @updatedAt
   answer     Answer[]
+  category   Category[]
 }
 
 model Answer {
-  id         String   @id @default(uuid())
+  id         String     @id @default(cuid())
   title      String
   content    String
-  author     User     @relation(fields: [authorid], references: [id])
+  author     User       @relation(fields: [authorid], references: [id])
   authorid   String
-  question   Question @relation(fields: [questionid], references: [id])
+  question   Question   @relation(fields: [questionid], references: [id])
   questionid String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  category   Category[]
 }
 
 model Profile {
-  id          String  @id @default(uuid())
+  id          String  @id @default(cuid())
   bio         String?
-  grade_level Int?
-  School      String?
+  grade_level String?
+  school      String?
   user        User    @relation(fields: [userId], references: [id])
   userId      String  @unique
 }
 
 model User {
-  id         String     @id @default(uuid())
+  id         String     @id @default(cuid())
   email      String     @unique
   username   String     @unique
   password   String     @unique
@@ -59,4 +62,12 @@ model User {
   answers    Answer[]
   profile    Profile?
   likedposts String[]
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String
+  posts     Post[]
+  answers   Answer[]
+  questions Question[]
 }
